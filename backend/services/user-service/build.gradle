@@ -1,0 +1,71 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.6'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'by.aresheg'
+version = '0.0.1-SNAPSHOT'
+description = 'user-service'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	springCloudVersion = '2025.0.0'
+	postgresVersion = '42.7.8'
+	lombokVersion = '1.18.42'
+	mapstructVersion = '1.6.3'
+	mapstructLombokVersion = '0.2.0'
+	libphoneNumberVersion = '8.13.48'
+	springdocVersion = '2.8.13'
+	javaJwtVersion = '4.5.0'
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	implementation 'org.springframework.boot:spring-boot-configuration-processor'
+	implementation "com.auth0:java-jwt:${javaJwtVersion}"
+	implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}") {
+		exclude group: 'org.apache.commons', module: 'commons-lang3'
+	}
+	implementation 'org.apache.commons:commons-lang3:3.19.0'
+	implementation 'org.liquibase:liquibase-core'
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+	implementation "com.googlecode.libphonenumber:libphonenumber:${libphoneNumberVersion}"
+	runtimeOnly "org.postgresql:postgresql:${postgresVersion}"
+	compileOnly "org.projectlombok:lombok:${lombokVersion}"
+	annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${mapstructLombokVersion}"
+	testImplementation "org.springframework.boot:spring-boot-starter-test"
+	testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
