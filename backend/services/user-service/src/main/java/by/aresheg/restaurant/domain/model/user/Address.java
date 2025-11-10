@@ -1,6 +1,5 @@
 package by.aresheg.restaurant.domain.model.user;
 
-import by.aresheg.restaurant.domain.model.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,4 +29,5 @@ public class Address {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
 }

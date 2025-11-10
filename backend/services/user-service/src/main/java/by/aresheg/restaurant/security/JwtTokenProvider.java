@@ -2,7 +2,7 @@ package by.aresheg.restaurant.security;
 
 import by.aresheg.restaurant.domain.exception.auth.InvalidTokenException;
 import by.aresheg.restaurant.domain.model.role.Role;
-import by.aresheg.restaurant.domain.model.dto.auth.JwtResponse;
+import by.aresheg.restaurant.domain.model.auth.dto.auth.JwtResponse;
 import by.aresheg.restaurant.domain.model.user.User;
 import by.aresheg.restaurant.mapper.RoleMapper;
 import by.aresheg.restaurant.security.props.JwtProperties;
@@ -92,10 +92,6 @@ public class JwtTokenProvider {
         String newRefreshToken = generateRefreshToken(userId, user.getEmail());
 
         return JwtResponse.builder()
-                .id(userId)
-                .email(user.getEmail())
-                .fullName(user.getFullName())
-                .phone(user.getPhone())
                 .accessToken(newAccessToken)
                 .refreshToken(newRefreshToken)
                 .build();
@@ -116,4 +112,5 @@ public class JwtTokenProvider {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
+
 }

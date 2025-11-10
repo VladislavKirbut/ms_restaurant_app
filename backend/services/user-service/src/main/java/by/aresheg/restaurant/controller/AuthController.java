@@ -1,15 +1,16 @@
 package by.aresheg.restaurant.controller;
 
 import by.aresheg.restaurant.controller.api.AuthControllerAPI;
-import by.aresheg.restaurant.domain.model.dto.ApiResponse;
-import by.aresheg.restaurant.domain.model.dto.request.RegistrationRequestDto;
-import by.aresheg.restaurant.domain.model.dto.response.RegistrationResponseDto;
-import by.aresheg.restaurant.domain.model.dto.auth.JwtRequest;
-import by.aresheg.restaurant.domain.model.dto.auth.JwtResponse;
+import by.aresheg.restaurant.domain.model.auth.dto.response.ApiResponse;
+import by.aresheg.restaurant.domain.model.auth.dto.request.RegistrationRequestDto;
+import by.aresheg.restaurant.domain.model.auth.dto.response.RegistrationResponseDto;
+import by.aresheg.restaurant.domain.model.auth.dto.auth.JwtRequest;
+import by.aresheg.restaurant.domain.model.auth.dto.auth.JwtResponse;
 import by.aresheg.restaurant.service.AuthService;
 import by.aresheg.restaurant.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import static by.aresheg.restaurant.shared.enums.MessageCode.*;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/auth")
 public class AuthController implements AuthControllerAPI {
 
@@ -27,15 +29,17 @@ public class AuthController implements AuthControllerAPI {
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<RegistrationResponseDto>> register(@RequestBody @Valid RegistrationRequestDto request) {
+        ApiResponse<RegistrationResponseDto> build = ApiResponse.<RegistrationResponseDto>builder()
+                .success(true)
+                .message(REGISTRATION_SUCCESS.getMessage())
+                .messageCode(REGISTRATION_SUCCESS.getMessageCode())
+                .data(authService.register(request))
+                .build();
+        log.info("" + build);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ApiResponse.<RegistrationResponseDto>builder()
-                        .success(true)
-                        .message(REGISTRATION_SUCCESS.getMessage())
-                        .messageCode(REGISTRATION_SUCCESS.getMessageCode())
-                        .data(authService.register(request))
-                        .build()
-                );
+                .body(build);
+
     }
 
     @PostMapping("/verify-email")

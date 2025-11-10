@@ -1,9 +1,9 @@
 package by.aresheg.restaurant.service;
 
-import by.aresheg.restaurant.domain.model.dto.request.RegistrationRequestDto;
-import by.aresheg.restaurant.domain.model.dto.response.RegistrationResponseDto;
-import by.aresheg.restaurant.domain.model.dto.auth.JwtRequest;
-import by.aresheg.restaurant.domain.model.dto.auth.JwtResponse;
+import by.aresheg.restaurant.domain.model.auth.dto.request.RegistrationRequestDto;
+import by.aresheg.restaurant.domain.model.auth.dto.response.RegistrationResponseDto;
+import by.aresheg.restaurant.domain.model.auth.dto.auth.JwtRequest;
+import by.aresheg.restaurant.domain.model.auth.dto.auth.JwtResponse;
 
 public interface AuthService {
 

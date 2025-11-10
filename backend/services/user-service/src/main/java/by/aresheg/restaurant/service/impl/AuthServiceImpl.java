@@ -1,22 +1,23 @@
 package by.aresheg.restaurant.service.impl;
 
 import by.aresheg.restaurant.domain.exception.RoleNotFoundException;
-import by.aresheg.restaurant.domain.model.dto.request.RegistrationRequestDto;
-import by.aresheg.restaurant.domain.model.dto.response.RegistrationResponseDto;
-import by.aresheg.restaurant.domain.model.dto.auth.JwtRequest;
-import by.aresheg.restaurant.domain.model.dto.auth.JwtResponse;
+import by.aresheg.restaurant.domain.model.auth.dto.request.RegistrationRequestDto;
+import by.aresheg.restaurant.domain.model.auth.dto.response.RegistrationResponseDto;
+import by.aresheg.restaurant.domain.model.auth.dto.auth.JwtRequest;
+import by.aresheg.restaurant.domain.model.auth.dto.auth.JwtResponse;
 import by.aresheg.restaurant.domain.exception.EmailAlreadyExistsException;
 import by.aresheg.restaurant.domain.exception.PhoneAlreadyExistsException;
 import by.aresheg.restaurant.domain.exception.UserNotFoundException;
 import by.aresheg.restaurant.domain.model.role.Role;
 import by.aresheg.restaurant.domain.model.user.UserStatus;
-import by.aresheg.restaurant.mapper.RoleMapper;
+import by.aresheg.restaurant.event.UserRegisteredEvent;
 import by.aresheg.restaurant.mapper.UserMapper;
 import by.aresheg.restaurant.domain.model.user.User;
 import by.aresheg.restaurant.repository.RoleRepository;
 import by.aresheg.restaurant.repository.UserRepository;
 import by.aresheg.restaurant.service.AuthService;
 import by.aresheg.restaurant.security.JwtTokenProvider;
+import by.aresheg.restaurant.service.kafka.KafkaEventProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +26,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static by.aresheg.restaurant.domain.model.role.DefaultRoles.ROLE_USER;
+import java.util.UUID;
+
+import static by.aresheg.restaurant.domain.model.role.DefaultRoles.USER;
 
 @Service
 @RequiredArgsConstructor
@@ -42,17 +45,17 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserMapper userMapper;
 
-    private final RoleMapper roleMapper;
+    private final KafkaEventProducer kafkaEventProducer;
 
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public JwtResponse login(JwtRequest loginRequest) {
-        log.info("Registration attempt for email: {}", loginRequest.getEmail());
+        log.info("Registration attempt for email: {}", loginRequest.email());
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-        User user = userRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new UserNotFoundException(String.format("User not found with email: %s", loginRequest.getEmail())));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password()));
+        User user = userRepository.findByEmail(loginRequest.email())
+                .orElseThrow(() -> new UserNotFoundException(String.format("User not found with email: %s", loginRequest.email())));
 
         return JwtResponse.builder()
                 .accessToken(jwtTokenProvider.generateAccessToken(user.getId(), user.getEmail(), user.getRoles()))
@@ -80,6 +83,15 @@ public class AuthServiceImpl implements AuthService {
         user.setStatus(UserStatus.PENDING);
 
         userRepository.save(user);
+
+        String verificationToken = UUID.randomUUID().toString();
+        kafkaEventProducer.sendUserRegisteredEvent(
+                UserRegisteredEvent.builder()
+                        .email(user.getEmail())
+                        .fullName(user.getFullName())
+                        .verificationToken(verificationToken)
+                        .build()
+        );
 
         return RegistrationResponseDto.builder()
                 .email(user.getEmail())

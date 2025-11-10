@@ -17,6 +17,17 @@ spring:
         format_sql: true
   liquibase:
     default-schema: user_schema
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST}:${KAFKA_PORT}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+
+app:
+  kafka:
+    topic: email-notifications
 
 springdoc:
   override-with-generic-response: false

@@ -1,9 +1,9 @@
 package by.aresheg.restaurant.service.impl;
 
 import by.aresheg.restaurant.domain.exception.InvalidPasswordException;
-import by.aresheg.restaurant.domain.model.dto.request.ChangePasswordRequestDto;
-import by.aresheg.restaurant.domain.model.dto.request.UpdateUserRequestDto;
-import by.aresheg.restaurant.domain.model.dto.response.UserResponseDto;
+import by.aresheg.restaurant.domain.model.auth.dto.request.ChangePasswordRequestDto;
+import by.aresheg.restaurant.domain.model.auth.dto.request.UpdateUserRequestDto;
+import by.aresheg.restaurant.domain.model.auth.dto.response.UserResponseDto;
 import by.aresheg.restaurant.service.UserService;
 import by.aresheg.restaurant.domain.exception.UserNotFoundException;
 import by.aresheg.restaurant.mapper.UserMapper;
