@@ -1,0 +1,43 @@
+server:
+  port: 8222
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: user-service
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/api/v1/users/**, /api/v1/auth/**
+              filters:
+                - StripPrefix=2
+
+            # Swagger UI
+            - id: user-service-swagger
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/swagger-ui/**, /v3/api-docs/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+    register-with-eureka: true
+    fetch-registry: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+
+logging:
+  level:
+    root: INFO
+    by.aresheg.gateway: DEBUG
+
+security:
+  jwt:
+    secret: ${SECRET}

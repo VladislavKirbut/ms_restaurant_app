@@ -1,0 +1,41 @@
+server:
+  port: 0
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${USER_DB_USERNAME}
+    password: ${USER_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  liquibase:
+    default-schema: user_schema
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST}:${KAFKA_PORT}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+
+app:
+  kafka:
+    topic: email-notifications
+
+springdoc:
+  override-with-generic-response: false
+
+security:
+  jwt:
+    secret: ${SECRET}
+    access: 30m
+    refresh: 30d
+    issuer: user-service
+    audience: restaurant-service

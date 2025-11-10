@@ -1,0 +1,12 @@
+spring:
+  config:
+    import: optional:configserver:http://localhost:8888/
+  application:
+    name: user-service
+
+logging:
+  level:
+    org.apache.kafka: WARN
+    org.springframework.kafka: WARN
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
