@@ -1,4 +1,4 @@
 --changeset vkirbut':1
-INSERT INtO roles (name)
+INSERT INTO roles (name)
 VALUES ('USER'),
        ('ADMIN');

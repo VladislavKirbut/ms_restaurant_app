@@ -1,7 +1,7 @@
 package by.aresheg.restaurant.controller.api;
 
-import by.aresheg.restaurant.domain.model.dto.request.RegistrationRequestDto;
-import by.aresheg.restaurant.domain.model.dto.response.RegistrationResponseDto;
+import by.aresheg.restaurant.domain.model.auth.dto.request.RegistrationRequestDto;
+import by.aresheg.restaurant.domain.model.auth.dto.response.RegistrationResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,6 +27,6 @@ public interface AuthControllerAPI {
                     )
             }
     )
-    ResponseEntity<by.aresheg.restaurant.domain.model.dto.ApiResponse<RegistrationResponseDto>> register(@RequestBody RegistrationRequestDto request);
+    ResponseEntity<by.aresheg.restaurant.domain.model.auth.dto.response.ApiResponse<RegistrationResponseDto>> register(@RequestBody RegistrationRequestDto request);
 
 }

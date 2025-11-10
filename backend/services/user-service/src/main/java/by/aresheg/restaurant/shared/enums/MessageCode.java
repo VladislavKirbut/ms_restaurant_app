@@ -14,7 +14,6 @@ public enum MessageCode {
     USER_DELETED_SUCCESS("USER_DELETED_SUCCESS", "User deleted successfully"),
     PASSWORD_CHANGE_SUCCESS("PASSWORD_CHANGE_SUCCESS", "Password changed successfully");
 
-
     private final String messageCode;
 
     private final String message;

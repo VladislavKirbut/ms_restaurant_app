@@ -49,6 +49,7 @@ dependencies {
 	}
 	implementation 'org.apache.commons:commons-lang3:3.19.0'
 	implementation 'org.liquibase:liquibase-core'
+	implementation 'org.springframework.kafka:spring-kafka'
 	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
 	implementation "com.googlecode.libphonenumber:libphonenumber:${libphoneNumberVersion}"
 	runtimeOnly "org.postgresql:postgresql:${postgresVersion}"

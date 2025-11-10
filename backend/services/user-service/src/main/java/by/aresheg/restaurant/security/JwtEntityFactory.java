@@ -26,4 +26,5 @@ public class JwtEntityFactory {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
+
 }

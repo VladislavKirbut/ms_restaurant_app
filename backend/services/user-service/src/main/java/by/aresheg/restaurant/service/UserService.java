@@ -1,8 +1,8 @@
 package by.aresheg.restaurant.service;
 
-import by.aresheg.restaurant.domain.model.dto.request.ChangePasswordRequestDto;
-import by.aresheg.restaurant.domain.model.dto.request.UpdateUserRequestDto;
-import by.aresheg.restaurant.domain.model.dto.response.UserResponseDto;
+import by.aresheg.restaurant.domain.model.auth.dto.request.ChangePasswordRequestDto;
+import by.aresheg.restaurant.domain.model.auth.dto.request.UpdateUserRequestDto;
+import by.aresheg.restaurant.domain.model.auth.dto.response.UserResponseDto;
 import by.aresheg.restaurant.domain.model.user.User;
 
 import java.util.List;

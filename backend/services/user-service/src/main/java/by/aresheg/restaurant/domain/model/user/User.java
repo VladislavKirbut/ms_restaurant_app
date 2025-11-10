@@ -48,6 +48,7 @@ public class User {
     private Instant emailVerifiedAt;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @Builder.Default
     @JoinTable(
             name = "users_roles",
             schema = "user_schema",

@@ -1,9 +1,8 @@
 package by.aresheg.restaurant.mapper;
 
-import by.aresheg.restaurant.domain.model.dto.UserDto;
-import by.aresheg.restaurant.domain.model.dto.request.RegistrationRequestDto;
-import by.aresheg.restaurant.domain.model.dto.request.UpdateUserRequestDto;
-import by.aresheg.restaurant.domain.model.dto.response.UserResponseDto;
+import by.aresheg.restaurant.domain.model.auth.dto.request.RegistrationRequestDto;
+import by.aresheg.restaurant.domain.model.auth.dto.request.UpdateUserRequestDto;
+import by.aresheg.restaurant.domain.model.auth.dto.response.UserResponseDto;
 import by.aresheg.restaurant.domain.model.user.User;
 import org.mapstruct.*;
 
@@ -34,7 +33,4 @@ public interface UserMapper {
 
     UserResponseDto toDto(User user);
 
-    UserDto toUserDto(User user);
 }
-
-// добавить изменение пароля и email  определиться в каких сервисах они должны быть
