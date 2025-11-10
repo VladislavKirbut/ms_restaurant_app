@@ -74,7 +74,7 @@ public class AuthServiceImpl implements AuthService {
         checkUserExists(request);
 
         Role role = roleRepository
-                .findByName(USER.name())
+                .findByName(ROLE_USER.name())
                 .orElseThrow(() -> new RoleNotFoundException(String.format("Role '%s' not found in database", USER.name())));
 
         User user = userMapper.toEntity(request);
