@@ -25,7 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static by.aresheg.restaurant.domain.model.role.DefaultRoles.USER;
+import static by.aresheg.restaurant.domain.model.role.DefaultRoles.ROLE_USER;
 
 @Service
 @RequiredArgsConstructor
@@ -71,7 +71,7 @@ public class AuthServiceImpl implements AuthService {
         checkUserExists(request);
 
         Role role = roleRepository
-                .findByName(USER.name())
+                .findByName(ROLE_USER.name())
                 .orElseThrow(() -> new RoleNotFoundException(String.format("Role '%s' not found in database", USER.name())));
 
         User user = userMapper.toEntity(request);
