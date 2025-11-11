@@ -1,15 +1,48 @@
 services:
-  postgres:
+  user-db:
     container_name: pg_user_db
     image: postgres:16
     environment:
-      POSTGRES_USERNAME: ${USER_DB_USERNAME}
+      POSTGRES_DB: user_db
+      POSTGRES_USER: ${USER_DB_USERNAME}
       POSTGRES_PASSWORD: ${USER_DB_PASSWORD}
-      POSTGRES_DATA: /var/lib/postgresql/data
+      PGDATA: /var/lib/postgresql/data
     volumes:
       - user_db_data:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - 5435:5432
+    networks:
+      - restaurant-net
+    restart: unless-stopped
+
+  restaurant-db:
+    container_name: pg_restaurant_db
+    image: postgres:16
+    environment:
+      POSTGRES_DB: restaurant_db
+      POSTGRES_USER: ${RESTAURANT_DB_USERNAME}
+      POSTGRES_PASSWORD: ${RESTAURANT_DB_PASSWORD}
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - restaurant_db_data:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    networks:
+      - restaurant-net
+    restart: unless-stopped
+
+  order-db:
+    container_name: pg_order_db
+    image: postgres:16
+    environment:
+      POSTGRES_DB: order_db
+      POSTGRES_USER: ${ORDER_DB_USERNAME}
+      POSTGRES_PASSWORD: ${ORDER_DB_PASSWORD}
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - order_db_data:/var/lib/postgresql/data
+    ports:
+      - 5434:5432
     networks:
       - restaurant-net
     restart: unless-stopped
@@ -46,6 +79,8 @@ services:
 
 volumes:
   user_db_data:
+  restaurant_db_data:
+  order_db_data:
 
 networks:
   restaurant-net:
