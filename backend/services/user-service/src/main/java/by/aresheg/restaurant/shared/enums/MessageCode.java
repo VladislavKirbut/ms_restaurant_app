@@ -12,7 +12,9 @@ public enum MessageCode {
     USERS_RETRIEVED_SUCCESS("USERS_RETRIEVED_SUCCESS", "Users retrieved successfully"),
     USER_RETRIEVED_SUCCESS("USER_RETRIEVED_SUCCESS", "User retrieved successfully"),
     USER_DELETED_SUCCESS("USER_DELETED_SUCCESS", "User deleted successfully"),
-    PASSWORD_CHANGE_SUCCESS("PASSWORD_CHANGE_SUCCESS", "Password changed successfully");
+    PASSWORD_CHANGE_SUCCESS("PASSWORD_CHANGE_SUCCESS", "Password changed successfully"),
+
+    EMAIL_VERIFIED_SUCCESS("EMAIL_VERIFIED_SUCCESS", "Email verified successfully");
 
     private final String messageCode;
 

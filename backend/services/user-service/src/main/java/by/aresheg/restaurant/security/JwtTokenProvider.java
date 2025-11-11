@@ -43,8 +43,6 @@ public class JwtTokenProvider {
 
     private final UserDetailsService userDetailsService;
 
-    private final RoleMapper roleMapper;
-
     public String generateAccessToken(Long id, String email, Set<Role> roles) {
         Instant issuedAt = Instant.now();
         Instant expiresAt = issuedAt.plus(jwtProperties.getAccess());

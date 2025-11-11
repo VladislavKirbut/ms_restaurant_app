@@ -8,6 +8,7 @@ import by.aresheg.restaurant.domain.model.auth.dto.auth.JwtRequest;
 import by.aresheg.restaurant.domain.model.auth.dto.auth.JwtResponse;
 import by.aresheg.restaurant.service.AuthService;
 import by.aresheg.restaurant.service.UserService;
+import by.aresheg.restaurant.service.VerificationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,26 +26,31 @@ public class AuthController implements AuthControllerAPI {
 
     private final AuthService authService;
 
-    private final UserService userService;
+    private final VerificationService verificationService;
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<RegistrationResponseDto>> register(@RequestBody @Valid RegistrationRequestDto request) {
-        ApiResponse<RegistrationResponseDto> build = ApiResponse.<RegistrationResponseDto>builder()
-                .success(true)
-                .message(REGISTRATION_SUCCESS.getMessage())
-                .messageCode(REGISTRATION_SUCCESS.getMessageCode())
-                .data(authService.register(request))
-                .build();
-        log.info("" + build);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(build);
+                .body(ApiResponse.<RegistrationResponseDto>builder()
+                        .success(true)
+                        .message(REGISTRATION_SUCCESS.getMessage())
+                        .messageCode(REGISTRATION_SUCCESS.getMessageCode())
+                        .data(authService.register(request))
+                        .build());
 
     }
 
     @PostMapping("/verify-email")
     public ResponseEntity<ApiResponse<JwtResponse>> verifyEmail(@RequestParam String token) {
-        return null;
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.<JwtResponse>builder()
+                        .success(true)
+                        .message(EMAIL_VERIFIED_SUCCESS.getMessage())
+                        .messageCode(EMAIL_VERIFIED_SUCCESS.getMessageCode())
+                        .data(verificationService.verifyEmail(token))
+                        .build());
     }
 
     @PostMapping("/login")

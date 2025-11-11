@@ -2,6 +2,7 @@ package by.aresheg.restaurant.domain.handler;
 
 import by.aresheg.restaurant.domain.exception.*;
 import by.aresheg.restaurant.domain.exception.auth.InvalidTokenException;
+import by.aresheg.restaurant.domain.exception.auth.VerificationException;
 import by.aresheg.restaurant.domain.model.auth.dto.response.ApiErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -66,7 +67,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleConflictExceptions(
             RuntimeException ex, HttpServletRequest request) {
 
-        return ResponseEntity.status(HttpStatus.CONFLICT)
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
                 .body(new ApiErrorResponse(
                         false,
                         ex.getMessage(),
@@ -84,7 +86,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleSecurityExceptions(
             RuntimeException ex, HttpServletRequest request) {
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
                 .body(new ApiErrorResponse(
                         false,
                         ex.getMessage(),
@@ -100,11 +103,27 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleAccessDenied(
             AccessDeniedException ex, HttpServletRequest request) {
 
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
                 .body(new ApiErrorResponse(
                         false,
-                        "Access denied",
+                        ex.getMessage(),
                         "ACCESS_DENIED",
+                        Instant.now(),
+                        request.getRequestURI(),
+                        null
+                ));
+    }
+
+    @ExceptionHandler(VerificationException.class)
+    public ResponseEntity<ApiErrorResponse> handleVerificationException(
+            VerificationException ex, HttpServletRequest request) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ApiErrorResponse(
+                        false,
+                        ex.getMessage(),
+                        "BAD_REQUEST",
                         Instant.now(),
                         request.getRequestURI(),
                         null
@@ -115,7 +134,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleAllExceptions(
             Exception ex, HttpServletRequest request) {
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ApiErrorResponse(
                         false,
                         "Internal server error",

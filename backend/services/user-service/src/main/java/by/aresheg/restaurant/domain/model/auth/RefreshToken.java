@@ -20,8 +20,8 @@ public class RefreshToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String tokenHash;
+    @Column(columnDefinition = "TEXT", nullable = false, unique = true)
+    private String token;
 
     @CreationTimestamp
     @Column(nullable = false)
@@ -32,6 +32,7 @@ public class RefreshToken {
 
     private Instant validatedAt;
 
+    @Column(nullable = false)
     private Boolean revoked = false;
 
     @ManyToOne
