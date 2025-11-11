@@ -1,5 +1,5 @@
 server:
-  port: 0
+  port: 8085
 
 spring:
   datasource:
@@ -39,3 +39,10 @@ security:
     refresh: 30d
     issuer: user-service
     audience: restaurant-service
+
+logging:
+  level:
+    org.apache.kafka: WARN
+    org.springframework.kafka: WARN
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
