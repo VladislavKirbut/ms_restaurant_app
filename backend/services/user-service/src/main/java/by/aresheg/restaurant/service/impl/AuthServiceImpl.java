@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-import static by.aresheg.restaurant.domain.model.role.DefaultRoles.USER;
+import static by.aresheg.restaurant.domain.model.role.DefaultRoles.*;
 
 @Service
 @RequiredArgsConstructor
@@ -74,7 +74,7 @@ public class AuthServiceImpl implements AuthService {
         checkUserExists(request);
 
         Role role = roleRepository
-                .findByName(ROLE_USER.name())
+                .findByName(USER.name())
                 .orElseThrow(() -> new RoleNotFoundException(String.format("Role '%s' not found in database", USER.name())));
 
         User user = userMapper.toEntity(request);
