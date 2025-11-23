@@ -54,16 +54,18 @@ public class EmailServiceImpl implements EmailService {
     }
 
     private String buildEmailText(UserRegisteredEvent dto, String fullVerificationUrl) {
-        return String.format(
-                "Welcome to DeliveryPlatform, %s!\\n\\n" +
-                        "Thank you for creating an account with us.\\n\\n" +
-                        "Please verify your email address to activate your account and start using our delivery services:\\n" +
-                        "%s\\n\\n" +
-                        "This verification link expires in 24 hours.\\n\\n" +
-                        "Happy delivering!\\nThe DeliveryPlatform Team",
-                dto.fullName(),
-                fullVerificationUrl
-        );
+        return """
+            Welcome to DeliveryPlatform, %s!
+        
+            Thank you for creating an account with us.
+        
+            Please verify your email address to activate your account and start using our delivery services:
+            %s
+        
+            This verification link expires in 24 hours.
+        
+            Happy delivering!
+            The DeliveryPlatform Team""".formatted(dto.fullName(), fullVerificationUrl);
     }
 
 }
